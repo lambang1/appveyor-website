@@ -35,6 +35,7 @@ If Hyper-V host already has **Virtual Switch** of type **External**, which uses 
 
 * Create new VM in Hyper-V
     * There are no special requirements to VMs disk and memory size. It mostly depends on what your build process requires
+    * If you create Ubuntu VM use 1MB BlockSizeBytes for VMs VHDX. How to do that described in [Best Practices for running Linux on Hyper-V](https://docs.microsoft.com/en-us/windows-server/virtualization/hyper-v/best-practices-for-running-linux-on-hyper-v).
     * Ensure Virtual NIC is connected to existing **Virtual Switch** with outbound Internet access or to switch created in [Create Virtual Switch](/docs/enterprise/running-builds-on-hyper-v/#create-virtual-switch) step
     * Operating system should be Windows Server 2012 R2 or higher. It can be freshly installed OS, or existing VHD with pre-installed software
 
@@ -52,6 +53,16 @@ Follow [these steps](/docs/enterprise/setup-master-vm/) to configure VM and inst
 Install any additional software required for your builds.
 
 Do not sysprep master VM!
+
+## Setup Ubuntu Master VM
+
+Login into master Vm via SSH.
+
+* for Ubuntu VM make sure to install [LIS Linux Integration Services](https://github.com/appveyor/team/blob/master/howto/router-ubuntu.md#installing-lis-on-ubuntu-1604)
+* Appveyor Build Agent on VM get network configuration from hyper-v via KVP. Therefore `eth0` should be set to `manual` in `/etc/network/interfaces`:
+```
+iface eth0 inet manual
+```
 
 ## Prepare master VHD
 
